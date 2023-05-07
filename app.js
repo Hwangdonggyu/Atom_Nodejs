@@ -1,10 +1,50 @@
-
+const bodyParser = require('body-parser'); // bodyparser로 post방식
 const express = require("express");
 const app = express();
+
 app.set('view engine', 'jade'); // jade 템플릿엔진과 express를 연결하는 코드
 app.set('views','./views');
 app.use(express.static('public')); // 정적인 파일이 위치할 디렉토리를 지정하는 기능
 // public 안에 있는 test.txt가 있는데 만약 뒤에 /test.txt하면 이 내용이 보여짐
+app.use(bodyParser.urlencoded({ extended: false })) // bodyparser를 사용하기 위한 use
+
+
+
+app.get('/form',function(req,res){
+  res.render('form');
+});
+app.get('/form_receiver',function(req,res){
+  let title = req.query.title;
+  let des = req.query.description;
+  res.send(title+','+des); 
+}) // get 방식
+
+app.post('/form_receiver',function(req,res){
+  let title = req.body.title;
+  let des = req.body.description; //body를 사용하려면 bodyparser을 해야함
+  res.send(title+','+des);
+}) // post 방식
+
+app.get('/topic/:id', function(req,res){
+  let topics = [
+    'javascript is...',
+    'Nodejs is ....',
+    'Express is...'
+  ];
+  let output = `
+    <a href="/topic?id=0">JavaScript</a><br>
+    <a href="/topic?id=1">NodeJs</a><br>
+    <a href="/topic?id=2">Express</a><br>
+    ${topics[req.params.id]}
+  `
+  res.send(output); //사용자 요청에 id를 출력해줌 , // query접근은 query를 쓰고, pass방식은 params로 써야함
+})
+
+app.get('/topic/:id/:mode',function(req,res){
+  res.send(req.params.id +','+req.params.mode)
+})
+
+
 app.locals.pretty = true; // temp.jade를 이쁘게 바꿔줌
 app.get('/template', function(req,res){
     res.render('temp', {time:Date(), _title: 'Jade'}); // send와 render와 비슷한 개념????
