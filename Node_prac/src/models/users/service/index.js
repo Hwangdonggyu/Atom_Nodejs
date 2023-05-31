@@ -62,9 +62,9 @@ class UserService {
     });
 
     if (!isExist) throw { status: 404, message: "유저를 찾을 수 없습니다." };
-    if (props.password) {
-      await props.updatePassword();
-    }
+    // if (props.password) {
+    //   await props.updatePassword();
+    // }
 
     await database.user.update({
       where: {

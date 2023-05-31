@@ -17,7 +17,6 @@ model User {
   phoneNumber String  @db.VarChar(11)
   password    String
   createdAt   DateTime @default(now())
-  map Map[]
   postlike PostLike[]
   postcomment Post_Comment[]
   chat Chat[]
@@ -29,13 +28,10 @@ model Map {
   lat          Float
   long         Float
   title        String @db.VarChar(200) 
-  explain      String @db.VarChar(300)
   address      String @db.VarChar(200)
   install_date DateTime @default(now())
-  pri_pub_div  Int
-  in_out_div   Int
-  user_id      String //fk
-  user User @relation (fields: [user_id], references: [id])
+  pri_pub_div  String @db.VarChar(100)
+  in_out_div   String @db.VarChar(100)
 
   post Post[] // 여러개 포스트 정보 가져오기
 }
@@ -97,6 +93,7 @@ model Search {
 
 model Profile {
   id             String  @id @default(uuid())
+  profile_img_num Int
   user_id        String //fk
   user User  @relation(fields: [user_id], references: [id])
   post_id        String //fk

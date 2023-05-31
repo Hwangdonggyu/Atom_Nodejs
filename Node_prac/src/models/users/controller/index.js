@@ -21,8 +21,8 @@ class UserController {
     this.router.get("/", pagination, this.getUsers.bind(this));
     this.router.get("/detail/:id", this.getUser.bind(this));
     this.router.post("/", this.createUser.bind(this));
-    this.router.post("/:id", this.updateUser.bind(this));
-    this.router.post("/:id", this.deleteUser.bind(this));
+    this.router.post("/update/:id", this.updateUser.bind(this));
+    this.router.post("/delete/:id", this.deleteUser.bind(this));
   }
 
   async getUsers(req, res, next) {
@@ -70,7 +70,7 @@ class UserController {
 
       await this.userService.updateUser(id, updateUserDto);
 
-      res.status(204).json({});
+      res.status(200).json({ message: '유저 정보가 변경되었습니다.' });
     } catch (err) {
       next(err);
     }
@@ -82,7 +82,7 @@ class UserController {
 
       await this.userService.deleteUser(id);
 
-      res.status(204).json({});
+      res.status(200).json({ message: '유저 정보가 삭제되었습니다.' });
     } catch (err) {
       next(err);
     }
